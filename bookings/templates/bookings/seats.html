@@ -1,0 +1,148 @@
+{% extends "bookings/base.html" %}
+
+{% block title %}Select Seats - MovieHub{% endblock %}
+
+{% block content %}
+<style>
+    /* The glowing curved cinema screen */
+    .cinema-screen {
+        height: 70px;
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto 50px auto;
+        background: linear-gradient(to bottom, #e2e8f0, #f8f9fa);
+        border-top-left-radius: 50% 100%;
+        border-top-right-radius: 50% 100%;
+        box-shadow: 0 -15px 30px rgba(13, 110, 253, 0.15);
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        padding-bottom: 10px;
+        border-bottom: 4px solid #cbd5e1;
+    }
+    
+    .screen-text {
+        font-weight: 700;
+        letter-spacing: 5px;
+        color: #94a3b8;
+        font-size: 0.85rem;
+    }
+
+    /* Custom Seat Shapes */
+    .seat {
+        width: 50px;
+        height: 55px;
+        border-radius: 12px 12px 4px 4px; /* Rounded top, flat bottom */
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.2s ease;
+        margin: 6px;
+        text-decoration: none;
+        border: 2px solid transparent;
+    }
+
+    /* Available Seat Styling */
+    .seat-available {
+        background-color: #e0f2fe;
+        color: #0284c7;
+        border-color: #7dd3fc;
+    }
+    
+    .seat-available:hover {
+        background-color: #0ea5e9;
+        color: #fff;
+        border-color: #0ea5e9;
+        transform: translateY(-4px) scale(1.05);
+        box-shadow: 0 5px 15px rgba(14, 165, 233, 0.3);
+    }
+
+    /* Booked Seat Styling */
+    .seat-booked {
+        background-color: #f1f5f9;
+        color: #cbd5e1;
+        border-color: #e2e8f0;
+        cursor: not-allowed;
+    }
+
+    /* Legend Dots */
+    .legend-dot {
+        width: 16px;
+        height: 16px;
+        border-radius: 4px;
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 6px;
+    }
+</style>
+
+<!-- Header Info -->
+<div class="text-center mb-5 mt-3">
+    <span class="badge bg-primary bg-opacity-10 text-primary mb-2 px-3 py-2 rounded-pill fw-medium">
+        Seat Selection
+    </span>
+    <h2 class="fw-bold text-dark mb-1">
+        {{ show.movie_name }}
+    </h2>
+    <p class="text-muted">Pick your favorite spot for the show</p>
+</div>
+
+<!-- Main Seating Area -->
+<div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-8">
+        <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+            <div class="card-body text-center p-4 p-sm-5 bg-white">
+                
+                <!-- The Screen -->
+                <div class="cinema-screen">
+                    <span class="screen-text">SCREEN THIS WAY</span>
+                </div>
+
+                <!-- The Seats -->
+                <div class="mt-4">
+                    {% for seat in seats %}
+                        
+                        {% if seat.is_booked %}
+                            <!-- Booked Seat -->
+                            <span class="seat seat-booked">
+                                {{ seat.seat_number }}
+                            </span>
+                        {% else %}
+                            <!-- Available Seat -->
+                            <a href="{% url 'select_seat' seat.id %}" class="seat seat-available">
+                                {{ seat.seat_number }}
+                            </a>
+                        {% endif %}
+                        
+                        <!-- Your row break logic -->
+                        {% if forloop.counter|divisibleby:3 %}
+                            <div class="w-100 d-block my-1"></div>
+                        {% endif %}
+                        
+                    {% endfor %}
+                </div>
+
+            </div>
+            
+            <!-- Legend Footer -->
+            <div class="card-footer bg-light border-0 py-3 d-flex justify-content-center gap-4">
+                <div class="d-flex align-items-center">
+                    <span class="legend-dot" style="background-color: #e0f2fe; border: 2px solid #7dd3fc;"></span>
+                    <span class="text-muted small fw-medium">Available</span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <span class="legend-dot" style="background-color: #f1f5f9; border: 2px solid #e2e8f0;"></span>
+                    <span class="text-muted small fw-medium">Booked</span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <span class="legend-dot" style="background-color: #0ea5e9;"></span>
+                    <span class="text-muted small fw-medium">Selected</span>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+{% endblock %}

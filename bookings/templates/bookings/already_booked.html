@@ -1,0 +1,42 @@
+{% extends "bookings/base.html" %}
+
+{% block title %}Seat Unavailable - MovieHub{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center py-5" style="min-height: 60vh;">
+    <div class="col-md-8 col-lg-6 col-xl-5">
+        
+        <div class="card shadow-lg border-0 rounded-4 text-center overflow-hidden">
+            
+            <div class="bg-danger" style="height: 6px;"></div>
+
+            <div class="card-body p-4 p-sm-5">
+                
+                <div class="d-inline-flex align-items-center justify-content-center bg-danger bg-opacity-10 text-danger rounded-circle mb-4" style="width: 80px; height: 80px;">
+                    <i class="bi bi-exclamation-octagon-fill display-5"></i>
+                </div>
+
+                <h2 class="fw-bold text-dark mb-3">Oops! Seat Taken</h2>
+                
+                <p class="text-muted fs-5 mb-4">
+                    We're sorry, but seat 
+                    <span class="badge bg-dark px-3 py-2 fs-6 mx-1 shadow-sm">{{ seat.seat_number }}</span> 
+                    was just booked by someone else. You gotta be quicker than that!
+                </p>
+
+                <div class="d-grid gap-3 d-sm-flex justify-content-sm-center mt-2">
+                    <a href="{% url 'seats' seat.show.id %}" class="btn btn-primary btn-lg rounded-pill px-4 shadow-sm fw-medium">
+                        <i class="bi bi-grid-3x3-gap-fill me-2"></i> Pick Another Seat
+                    </a>
+                    
+                    <a href="{% url 'index' %}" class="btn btn-light btn-lg rounded-pill px-4 text-dark border fw-medium">
+                        Browse Movies
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

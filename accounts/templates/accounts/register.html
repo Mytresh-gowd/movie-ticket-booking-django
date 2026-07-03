@@ -1,0 +1,105 @@
+{% extends "bookings/base.html" %}
+
+{% block title %}Register - MovieHub{% endblock %}
+
+{% block content %}
+<style>
+    /* Consistent styling for Django form inputs */
+    .django-form input {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        color: #212529;
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 0.5rem;
+        transition: all 0.2s;
+        margin-bottom: 0.5rem;
+    }
+    .django-form input:focus {
+        background-color: #fff;
+        border-color: #0d6efd;
+        outline: 0;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+    .django-form label {
+        font-weight: 500;
+        margin-bottom: 0.4rem;
+        color: #495057;
+        margin-top: 0.5rem;
+    }
+    /* Styles the Django password requirements beautifully */
+    .django-form ul {
+        padding-left: 1.2rem;
+        margin-bottom: 1rem;
+        font-size: 0.85rem;
+        color: #6c757d;
+    }
+    .django-form .helptext {
+        font-size: 0.85rem;
+        color: #6c757d;
+        display: block;
+        margin-bottom: 1rem;
+    }
+    /* Style form errors */
+    .errorlist {
+        color: #dc3545;
+        font-size: 0.85rem;
+        list-style-type: none;
+        padding: 0;
+        margin-bottom: 0.5rem;
+    }
+</style>
+
+<div class="row justify-content-center align-items-center py-4">
+    <!-- Slightly wider column than login, since register forms are larger -->
+    <div class="col-md-8 col-lg-6 col-xl-5">
+        
+        <!-- Sleek, modern card -->
+        <div class="card shadow-lg border-0 rounded-4">
+            
+            <!-- Card Header -->
+            <div class="card-header bg-white border-0 text-center pt-5 pb-2">
+                <div class="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary rounded-circle mb-3" style="width: 60px; height: 60px;">
+                    <i class="bi bi-person-plus-fill fs-2"></i>
+                </div>
+                <h3 class="fw-bold text-dark mb-0">Create an Account</h3>
+                <p class="text-muted small mt-1">Join MovieHub to start booking tickets</p>
+            </div>
+
+            <!-- Card Body: The Form -->
+            <div class="card-body p-4 p-sm-5 pt-3">
+                <form method="post" class="django-form">
+                    {% csrf_token %}
+                    
+                    <!-- Display non-field errors if any -->
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger rounded-3 py-2 text-center" role="alert">
+                            {{ form.non_field_errors|striptags }}
+                        </div>
+                    {% endif %}
+                    
+                    {{ form.as_p }}
+
+                    <div class="d-grid mt-4 pt-2">
+                        <button type="submit" class="btn btn-primary btn-lg rounded-pill fw-semibold shadow-sm">
+                            Register Now
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Card Footer: Link to Login -->
+            <div class="card-footer bg-light border-0 text-center py-4 rounded-bottom-4">
+                <p class="mb-0 text-muted">
+                    Already have an account? 
+                    <a href="{% url 'login' %}" class="fw-semibold text-primary text-decoration-none">
+                        Login here
+                    </a>
+                </p>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock content %}

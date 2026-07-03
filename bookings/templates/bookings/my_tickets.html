@@ -1,0 +1,67 @@
+{% extends "bookings/base.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+        <h2 class="mb-0 fw-bold text-dark">
+            <i class="bi bi-ticket-perforated-fill text-primary me-2"></i>My Tickets
+        </h2>
+    </div>
+
+    {% if seats %}
+    <div class="row g-4">
+        {% for seat in seats %}
+        <div class="col-md-6 col-xl-4">
+            <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
+                <div class="bg-dark text-white p-3 position-relative">
+                    <h5 class="mb-0 fw-bold text-truncate" title="{{ seat.show.movie_name }}">
+                        {{ seat.show.movie_name }}
+                    </h5>
+                </div>
+
+                <div class="card-body p-4 bg-light">
+                    <div class="mb-3">
+                        <small class="text-muted text-uppercase fw-semibold" style="font-size: 0.75rem; letter-spacing: 0.5px;">Cinema</small>
+                        <p class="mb-0 fw-bold text-dark fs-5">{{ seat.show.theatre.name }}</p>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <small class="text-muted text-uppercase fw-semibold" style="font-size: 0.75rem; letter-spacing: 0.5px;">Date</small>
+                            <p class="mb-0 fw-bold text-dark">{{ seat.show.show_time|date:"d M Y" }}</p>
+                        </div>
+                        <div class="col-6">
+                            <small class="text-muted text-uppercase fw-semibold" style="font-size: 0.75rem; letter-spacing: 0.5px;">Time</small>
+                            <p class="mb-0 fw-bold text-dark">{{ seat.show.show_time|time:"h:i A" }}</p>
+                        </div>
+                    </div>
+
+                    <div class="row border-top border-secondary border-opacity-25 pt-3 mt-2" style="border-top-style: dashed !important;">
+                        <div class="col-6">
+                            <small class="text-muted text-uppercase fw-semibold" style="font-size: 0.75rem; letter-spacing: 0.5px;">Seat</small>
+                            <h4 class="mb-0 fw-bold text-primary">{{ seat.seat_number }}</h4>
+                        </div>
+                        <div class="col-6 text-end">
+                            <small class="text-muted text-uppercase fw-semibold" style="font-size: 0.70rem;">Booked On</small>
+                            <p class="mb-0 text-muted" style="font-size: 0.85rem;">{{ seat.booking.booking_time|date:"d M Y, h:i A" }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="text-center py-5 bg-white shadow-sm rounded-4 border-0 mt-4">
+        <i class="bi bi-film text-muted opacity-50" style="font-size: 4rem;"></i>
+        <h4 class="mt-3 fw-bold text-dark">No Tickets Booked Yet</h4>
+        <p class="text-muted mb-4">You haven't booked any movies yet. Grab some popcorn and find a show!</p>
+        <a href="{% url 'movie_list' %}" class="btn btn-primary btn-lg px-4 rounded-pill shadow-sm">
+            Browse Movies
+        </a>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends "bookings/base.html" %}
+
+{% block title %}Confirm Booking - MovieHub{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center py-4">
+    <div class="col-md-8 col-lg-6 col-xl-5">
+        
+        <!-- Premium Checkout Card -->
+        <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+            
+            <!-- Dark Cinematic Header -->
+            <div class="bg-dark text-white text-center py-4 position-relative">
+                <i class="bi bi-ticket-perforated display-4 text-warning mb-2"></i>
+                <h3 class="fw-bold mb-0">Order Summary</h3>
+                <p class="text-white-50 small mb-0 mt-1">Please review your selection</p>
+            </div>
+
+            <!-- Card Body: Ticket Preview -->
+            <div class="card-body p-4 p-sm-5 bg-white">
+                
+                <!-- Dashed Receipt Box -->
+                <div class="border rounded-4 p-4 mb-4 position-relative shadow-sm" style="background-color: #f8fafc; border-style: dashed !important; border-color: #cbd5e1 !important;">
+                    
+                    <!-- Movie Title -->
+                    <h4 class="fw-bold text-dark mb-4 border-bottom pb-3">
+                        🎬 {{ seat.show.movie_name|default:"Movie Ticket" }}
+                    </h4>
+                    
+                    <!-- Details Grid -->
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <small class="text-muted text-uppercase fw-semibold" style="font-size: 0.7rem; letter-spacing: 0.5px;">Theatre</small>
+                            <p class="mb-0 fw-medium text-dark">{{ seat.show.theatre.name|default:"Main Cinema" }}</p>
+                        </div>
+                        <div class="col-6 text-end">
+                            <small class="text-muted text-uppercase fw-semibold" style="font-size: 0.7rem; letter-spacing: 0.5px;">Date & Time</small>
+                            <p class="mb-0 fw-medium text-dark">{{ seat.show.show_time|date:"d M, h:i A"|default:"Standard Time" }}</p>
+                        </div>
+                        
+                        <!-- The Big Reveal: Seat Number -->
+                        <div class="col-12 mt-4 pt-3 border-top border-secondary border-opacity-25 text-center">
+                            <small class="text-muted text-uppercase fw-semibold" style="font-size: 0.75rem; letter-spacing: 1px;">Selected Seat</small>
+                            <h1 class="mb-0 fw-bold text-primary mt-1 display-5">{{ seat.seat_number }}</h1>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Final Action Buttons -->
+                <form method="post" class="mt-4">
+                    {% csrf_token %}
+                    <div class="d-grid gap-3">
+                        
+                        <!-- Primary CTA -->
+                        <button type="submit" class="btn btn-primary btn-lg rounded-pill fw-semibold shadow-sm d-flex align-items-center justify-content-center">
+                            <i class="bi bi-check-circle-fill me-2"></i> Confirm & Book
+                        </button>
+                        
+                        <!-- Secondary CTA (Escape Hatch) -->
+                        <a href="{% url 'seats' seat.show.id %}" class="btn btn-light btn-lg rounded-pill text-dark fw-medium border shadow-sm">
+                            Cancel & Pick Another Seat
+                        </a>
+                        
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+        
+    </div>
+</div>
+{% endblock %}

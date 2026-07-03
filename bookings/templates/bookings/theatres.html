@@ -1,0 +1,98 @@
+{% extends "bookings/base.html" %}
+
+{% block title %}Theatres in {{ location }} - MovieHub{% endblock %}
+
+{% block content %}
+<style>
+    /* Premium card hover effects */
+    .theatre-card {
+        transition: all 0.3s ease;
+        background-color: #ffffff;
+    }
+    .theatre-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 24px rgba(0,0,0,0.08) !important;
+    }
+    
+    /* Arrow animation on hover */
+    .view-shows-link i {
+        transition: transform 0.2s ease;
+    }
+    .theatre-card:hover .view-shows-link i {
+        transform: translateX(5px);
+    }
+</style>
+
+<!-- Page Header with Back Button -->
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-5 mt-3 gap-3">
+    <div>
+        <span class="badge bg-primary bg-opacity-10 text-primary mb-2 px-3 py-2 rounded-pill fw-medium">
+            Select Cinema
+        </span>
+        <h2 class="fw-bold text-dark mb-1">
+            <i class="bi bi-geo-alt-fill text-danger me-2"></i>Theatres in {{ location }}
+        </h2>
+        <p class="text-muted mb-0">Choose a cinema below to see what's currently playing.</p>
+    </div>
+    
+    <!-- Escape Hatch: Back to locations -->
+    <div>
+        <a href="{% url 'index' %}" class="btn btn-light rounded-pill px-4 shadow-sm border fw-medium d-flex align-items-center transition-all">
+            <i class="bi bi-arrow-left me-2"></i> Change City
+        </a>
+    </div>
+</div>
+
+<!-- Theatres Grid -->
+<div class="row g-4">
+    {% for theatre in theatres %}
+    <div class="col-sm-6 col-lg-4">
+        
+        <!-- Entire card wrapped in link for massive click area -->
+        <a href="{% url 'shows' theatre.id %}" class="text-decoration-none">
+            <div class="card h-100 border-0 shadow-sm rounded-4 theatre-card overflow-hidden position-relative">
+                
+                <!-- Subtle background watermark icon -->
+                <i class="bi bi-camera-reels text-primary opacity-10 position-absolute end-0 bottom-0 mb-3 me-3" style="font-size: 6rem; z-index: 0; transform: rotate(-10deg);"></i>
+
+                <div class="card-body p-4 d-flex flex-column position-relative z-1">
+                    
+                    <!-- Cinema Icon -->
+                    <div class="d-inline-flex align-items-center justify-content-center bg-dark bg-opacity-10 text-dark rounded-circle mb-3" style="width: 50px; height: 50px;">
+                        <i class="bi bi-shop fs-4"></i>
+                    </div>
+                    
+                    <!-- Cinema Name -->
+                    <h4 class="card-title fw-bold text-dark mb-1">{{ theatre }}</h4>
+                    <p class="text-muted small mb-4">Standard & Premium seating available</p>
+
+                    <!-- Animated Call to Action -->
+                    <div class="mt-auto d-flex align-items-center text-primary fw-semibold view-shows-link">
+                        View Showtimes <i class="bi bi-arrow-right ms-2 fs-5"></i>
+                    </div>
+                    
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    {% empty %}
+    <!-- Professional Empty State -->
+    <div class="col-12 text-center py-5">
+        <div class="p-5 bg-white shadow-sm rounded-4 border-0 mt-2">
+            <div class="d-inline-flex align-items-center justify-content-center bg-danger bg-opacity-10 text-danger rounded-circle mb-4" style="width: 80px; height: 80px;">
+                <i class="bi bi-building-slash display-5"></i>
+            </div>
+            <h4 class="mt-2 fw-bold text-dark">No Theatres Found</h4>
+            <p class="text-muted mb-0">We don't have any partner cinemas in <strong>{{ location }}</strong> right now.</p>
+            <p class="text-muted small mt-1">We are constantly expanding, so check back in the future!</p>
+            
+            <a href="{% url 'index' %}" class="btn btn-outline-primary rounded-pill px-4 mt-4 fw-medium">
+                Try Another City
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock content %}
